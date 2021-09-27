@@ -2,7 +2,7 @@
 {  "name":"WebOS",
     "manufacturer":"LG",
     "type":"TV",
-    "version":8,
+    "version":9,
     "discover":{
        "welcomeheadertext":"WebOS TV",
        "welcomedescription":"powered by meta\nby JAC459",
@@ -239,6 +239,49 @@
             },
             "NEXT": {"type":"webSocket", "command":{"connection": "$InputWebSocket", "message":"type:button<__n__>name:FASTFORWARD<__n__><__n__>"},
                 "evalwrite":[{"variable":"MyStatus","value":"Next pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+
+            "INPUT HDMI 1": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi1\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"HDMI 1 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT HDMI 2": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi2\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"HDMI 2 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT HDMI 3": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi3\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"HDMI 3 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT HDMI 4": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi4\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"HDMI 4 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT HDMI 5": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi5\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"HDMI 5 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT HDMI 6": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi6\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"HDMI 6 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+
+            "INPUT AV1": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av1\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"AV 1 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT AV2": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av2\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"AV 2 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            "INPUT AV3": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av3\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"AV 3 pressed."}],
+                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            },
+            
+            "INPUT COMPONENT": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.component\"}}}; rep;",
+                "evalwrite":[{"variable":"MyStatus","value":"Component pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
 
