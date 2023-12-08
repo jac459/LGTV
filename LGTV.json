@@ -1,8 +1,8 @@
- 
+
 {  "name":"WebOS",
     "manufacturer":"LG",
     "type":"TV",
-    "version":9,
+    "version":10,
     "discover":{
        "welcomeheadertext":"WebOS TV",
        "welcomedescription":"powered by meta\nby JAC459",
@@ -23,7 +23,7 @@
             "CurrentStatus" : {"label":".", "actionlisten":"MyStatus", "listen":"MyState"}
         },
         "variables":{
-            "DeviceURI":"DYNAMIK_INST_START DYNAMIK JSON.parse(\"$Result\").ip + \":3000\" DYNAMIK_INST_END",
+            "DeviceURI":"DYNAMIK_INST_START DYNAMIK JSON.parse(\"$Result\").ip + \":3001\" DYNAMIK_INST_END",
             "AsyncMessage":"",
             "AsyncId":0,
             "AppList":"",
@@ -36,7 +36,7 @@
             "VolumePlayed": 0
         },
         "listeners" : {
-            "WebOSListener" : {"type":"webSocket", "command":{"connection":"ws://$DeviceURI", "message": "message"}, "queryresult" : "",          
+            "WebOSListener" : {"type":"webSocket", "command":{"connection":"wss://$DeviceURI", "message": "message"}, "queryresult" : "",          
                 "evalwrite":[
                     {"variable":"AsyncMessage","value":"DYNAMIK  (\"$Result\")"},
                     {"variable":"ClientKey", "value":"DYNAMIK let res; let ck = \"$ClientKey\";if ($AsyncMessage.id == \"requestKey\" && $AsyncMessage.type != \"error\" && $AsyncMessage.payload[\"client-key\"]) {res = $AsyncMessage.payload[\"client-key\"];} else {res = \"$ClientKey\";}; res;"},
@@ -63,44 +63,44 @@
         },
         "buttons":{          
             "POWER ON": {"type":"wol", "command":"$DeviceMac", "queryresult":"", "evaldo":[{"test":true,"then":"__RESTART", "or":""}], "evalwrite":[{"variable":"MyState","value":"Intenting connection to your TV..."}]},
-            "POWER OFF": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"turnoff\",\"uri\":\"ssap://system/turnOff\"}}; rep;", "queryresult":"", "evalwrite":[{"variable":"InputWebSocket","value":"$InputWebSocket"}], "evaldo":[{"test":true,"then":"__CLEANUP", "or":""}]},
+            "POWER OFF": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"turnoff\",\"uri\":\"ssap://system/turnOff\"}}; rep;", "queryresult":"", "evalwrite":[{"variable":"InputWebSocket","value":"$InputWebSocket"}], "evaldo":[{"test":true,"then":"__CLEANUP", "or":""}]},
             "__RESTART": {"type":"static", "command":".", "evaldo":[{"test":true,"then":"__INITIALISE", "or":""}, {"test":true,"then":"__SETUP", "or":""}]},
             "__BACKUP": {"type":"static", "command":".", "evaldo":[{"test":true,"then":"__PERSIST", "or":""}, {"test":true,"then":"__RESTART", "or":""}]},
             "__SETUP": {"type":"static", "command":".", "evaldo":[{"test":"DYNAMIK let ck = \"$ClientKey\"; (ck.length>0)?true:false","then":"__REGISTER", "or":"__REQUESTKEY"}]}, 
             "__FINALISETUP": {"type":"static", "command":".", "evaldo":[{"test":true,"then":"__INITIALISE", "or":""}], "evalwrite":[{"variable":"MyState","value":"Neeo is successfully connected to your TV."}]}, 
-            "__REQUESTKEY": {"type":"webSocket", "command":{"connection":"ws://$DeviceURI", "message": "{\"type\":\"register\",\"id\":\"requestKey\",\"payload\":{\"forcePairing\":false,\"pairingType\":\"PROMPT\",\"manifest\":{\"manifestVersion\":1,\"appVersion\":\"1.1\",\"signed\":{\"created\":\"20140509\",\"appId\":\"com.lge.test\",\"vendorId\":\"com.lge\",\"localizedAppNames\":{\"\":\"LG Remote App\",\"ko-KR\":\"리모컨 앱\",\"zxx-XX\":\"ЛГ Rэмotэ AПП\"},\"localizedVendorNames\":{\"\":\"LG Electronics\"},\"permissions\":[\"TEST_SECURE\",\"CONTROL_INPUT_TEXT\",\"CONTROL_MOUSE_AND_KEYBOARD\",\"READ_INSTALLED_APPS\",\"READ_LGE_SDX\",\"READ_NOTIFICATIONS\",\"SEARCH\",\"WRITE_SETTINGS\",\"WRITE_NOTIFICATION_ALERT\",\"CONTROL_POWER\",\"READ_CURRENT_CHANNEL\",\"READ_RUNNING_APPS\",\"READ_UPDATE_INFO\",\"UPDATE_FROM_REMOTE_APP\",\"READ_LGE_TV_INPUT_EVENTS\",\"READ_TV_CURRENT_TIME\"],\"serial\":\"2f930e2d2cfe083771f68e4fe7bb07\"},\"permissions\":[\"LAUNCH\",\"LAUNCH_WEBAPP\",\"APP_TO_APP\",\"CLOSE\",\"TEST_OPEN\",\"TEST_PROTECTED\",\"CONTROL_AUDIO\",\"CONTROL_DISPLAY\",\"CONTROL_INPUT_JOYSTICK\",\"CONTROL_INPUT_MEDIA_RECORDING\",\"CONTROL_INPUT_MEDIA_PLAYBACK\",\"CONTROL_INPUT_TV\",\"CONTROL_POWER\",\"READ_APP_STATUS\",\"READ_CURRENT_CHANNEL\",\"READ_INPUT_DEVICE_LIST\",\"READ_NETWORK_STATE\",\"READ_RUNNING_APPS\",\"READ_TV_CHANNEL_LIST\",\"WRITE_NOTIFICATION_TOAST\",\"READ_POWER_STATE\",\"READ_COUNTRY_INFO\"],\"signatures\":[{\"signatureVersion\":1,\"signature\":\"eyJhbGdvcml0aG0iOiJSU0EtU0hBMjU2Iiwia2V5SWQiOiJ0ZXN0LXNpZ25pbmctY2VydCIsInNpZ25hdHVyZVZlcnNpb24iOjF9.hrVRgjCwXVvE2OOSpDZ58hR+59aFNwYDyjQgKk3auukd7pcegmE2CzPCa0bJ0ZsRAcKkCTJrWo5iDzNhMBWRyaMOv5zWSrthlf7G128qvIlpMT0YNY+n/FaOHE73uLrS/g7swl3/qH/BGFG2Hu4RlL48eb3lLKqTt2xKHdCs6Cd4RMfJPYnzgvI4BNrFUKsjkcu+WD4OO2A27Pq1n50cMchmcaXadJhGrOqH5YmHdOCj5NSHzJYrsW0HPlpuAx/ECMeIZYDh6RMqaFM2DXzdKX9NmmyqzJ3o/0lkk/N97gfVRLW5hA29yeAwaCViZNCP8iC9aO0q9fQojoa7NQnAtw==\"}]}}}"},
-                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            "__REQUESTKEY": {"type":"webSocket", "command":{"connection":"wss://$DeviceURI", "message": "{\"type\":\"register\",\"id\":\"requestKey\",\"payload\":{\"forcePairing\":false,\"pairingType\":\"PROMPT\",\"manifest\":{\"manifestVersion\":1,\"appVersion\":\"1.1\",\"signed\":{\"created\":\"20140509\",\"appId\":\"com.lge.test\",\"vendorId\":\"com.lge\",\"localizedAppNames\":{\"\":\"LG Remote App\",\"ko-KR\":\"리모컨 앱\",\"zxx-XX\":\"ЛГ Rэмotэ AПП\"},\"localizedVendorNames\":{\"\":\"LG Electronics\"},\"permissions\":[\"TEST_SECURE\",\"CONTROL_INPUT_TEXT\",\"CONTROL_MOUSE_AND_KEYBOARD\",\"READ_INSTALLED_APPS\",\"READ_LGE_SDX\",\"READ_NOTIFICATIONS\",\"SEARCH\",\"WRITE_SETTINGS\",\"WRITE_NOTIFICATION_ALERT\",\"CONTROL_POWER\",\"READ_CURRENT_CHANNEL\",\"READ_RUNNING_APPS\",\"READ_UPDATE_INFO\",\"UPDATE_FROM_REMOTE_APP\",\"READ_LGE_TV_INPUT_EVENTS\",\"READ_TV_CURRENT_TIME\"],\"serial\":\"2f930e2d2cfe083771f68e4fe7bb07\"},\"permissions\":[\"LAUNCH\",\"LAUNCH_WEBAPP\",\"APP_TO_APP\",\"CLOSE\",\"TEST_OPEN\",\"TEST_PROTECTED\",\"CONTROL_AUDIO\",\"CONTROL_DISPLAY\",\"CONTROL_INPUT_JOYSTICK\",\"CONTROL_INPUT_MEDIA_RECORDING\",\"CONTROL_INPUT_MEDIA_PLAYBACK\",\"CONTROL_INPUT_TV\",\"CONTROL_POWER\",\"READ_APP_STATUS\",\"READ_CURRENT_CHANNEL\",\"READ_INPUT_DEVICE_LIST\",\"READ_NETWORK_STATE\",\"READ_RUNNING_APPS\",\"READ_TV_CHANNEL_LIST\",\"WRITE_NOTIFICATION_TOAST\",\"READ_POWER_STATE\",\"READ_COUNTRY_INFO\"],\"signatures\":[{\"signatureVersion\":1,\"signature\":\"eyJhbGdvcml0aG0iOiJSU0EtU0hBMjU2Iiwia2V5SWQiOiJ0ZXN0LXNpZ25pbmctY2VydCIsInNpZ25hdHVyZVZlcnNpb24iOjF9.hrVRgjCwXVvE2OOSpDZ58hR+59aFNwYDyjQgKk3auukd7pcegmE2CzPCa0bJ0ZsRAcKkCTJrWo5iDzNhMBWRyaMOv5zWSrthlf7G128qvIlpMT0YNY+n/FaOHE73uLrS/g7swl3/qH/BGFG2Hu4RlL48eb3lLKqTt2xKHdCs6Cd4RMfJPYnzgvI4BNrFUKsjkcu+WD4OO2A27Pq1n50cMchmcaXadJhGrOqH5YmHdOCj5NSHzJYrsW0HPlpuAx/ECMeIZYDh6RMqaFM2DXzdKX9NmmyqzJ3o/0lkk/N97gfVRLW5hA29yeAwaCViZNCP8iC9aO0q9fQojoa7NQnAtw==\"}]}}}"},
+            "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "__REGISTER": {"type":"webSocket", "command":"{\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"register\",\"id\":\"registered\",\"payload\":{\"forcePairing\":false,\"pairingType\":\"PROMPT\",\"client-key\":\"$ClientKey\",\"manifest\":{\"manifestVersion\":1,\"appVersion\":\"1.1\",\"signed\":{\"created\":\"20140509\",\"appId\":\"com.lge.test\",\"vendorId\":\"com.lge\",\"localizedAppNames\":{\"\":\"LG Remote App\",\"ko-KR\":\"리모컨 앱\",\"zxx-XX\":\"ЛГ Rэмotэ AПП\"},\"localizedVendorNames\":{\"\":\"LG Electronics\"},\"permissions\":[\"TEST_SECURE\",\"CONTROL_INPUT_TEXT\",\"CONTROL_MOUSE_AND_KEYBOARD\",\"READ_INSTALLED_APPS\",\"READ_LGE_SDX\",\"READ_NOTIFICATIONS\",\"SEARCH\",\"WRITE_SETTINGS\",\"WRITE_NOTIFICATION_ALERT\",\"CONTROL_POWER\",\"READ_CURRENT_CHANNEL\",\"READ_RUNNING_APPS\",\"READ_UPDATE_INFO\",\"UPDATE_FROM_REMOTE_APP\",\"READ_LGE_TV_INPUT_EVENTS\",\"READ_TV_CURRENT_TIME\"],\"serial\":\"2f930e2d2cfe083771f68e4fe7bb07\"},\"permissions\":[\"LAUNCH\",\"LAUNCH_WEBAPP\",\"APP_TO_APP\",\"CLOSE\",\"TEST_OPEN\",\"TEST_PROTECTED\",\"CONTROL_AUDIO\",\"CONTROL_DISPLAY\",\"CONTROL_INPUT_JOYSTICK\",\"CONTROL_INPUT_MEDIA_RECORDING\",\"CONTROL_INPUT_MEDIA_PLAYBACK\",\"CONTROL_INPUT_TV\",\"CONTROL_POWER\",\"READ_APP_STATUS\",\"READ_CURRENT_CHANNEL\",\"READ_INPUT_DEVICE_LIST\",\"READ_NETWORK_STATE\",\"READ_RUNNING_APPS\",\"READ_TV_CHANNEL_LIST\",\"WRITE_NOTIFICATION_TOAST\",\"READ_POWER_STATE\",\"READ_COUNTRY_INFO\"],\"signatures\":[{\"signatureVersion\":1,\"signature\":\"eyJhbGdvcml0aG0iOiJSU0EtU0hBMjU2Iiwia2V5SWQiOiJ0ZXN0LXNpZ25pbmctY2VydCIsInNpZ25hdHVyZVZlcnNpb24iOjF9.hrVRgjCwXVvE2OOSpDZ58hR+59aFNwYDyjQgKk3auukd7pcegmE2CzPCa0bJ0ZsRAcKkCTJrWo5iDzNhMBWRyaMOv5zWSrthlf7G128qvIlpMT0YNY+n/FaOHE73uLrS/g7swl3/qH/BGFG2Hu4RlL48eb3lLKqTt2xKHdCs6Cd4RMfJPYnzgvI4BNrFUKsjkcu+WD4OO2A27Pq1n50cMchmcaXadJhGrOqH5YmHdOCj5NSHzJYrsW0HPlpuAx/ECMeIZYDh6RMqaFM2DXzdKX9NmmyqzJ3o/0lkk/N97gfVRLW5hA29yeAwaCViZNCP8iC9aO0q9fQojoa7NQnAtw==\"}]}}}}",
-                "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
+            "__REGISTER": {"type":"webSocket", "command":"{\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"register\",\"id\":\"registered\",\"payload\":{\"forcePairing\":false,\"pairingType\":\"PROMPT\",\"client-key\":\"$ClientKey\",\"manifest\":{\"manifestVersion\":1,\"appVersion\":\"1.1\",\"signed\":{\"created\":\"20140509\",\"appId\":\"com.lge.test\",\"vendorId\":\"com.lge\",\"localizedAppNames\":{\"\":\"LG Remote App\",\"ko-KR\":\"리모컨 앱\",\"zxx-XX\":\"ЛГ Rэмotэ AПП\"},\"localizedVendorNames\":{\"\":\"LG Electronics\"},\"permissions\":[\"TEST_SECURE\",\"CONTROL_INPUT_TEXT\",\"CONTROL_MOUSE_AND_KEYBOARD\",\"READ_INSTALLED_APPS\",\"READ_LGE_SDX\",\"READ_NOTIFICATIONS\",\"SEARCH\",\"WRITE_SETTINGS\",\"WRITE_NOTIFICATION_ALERT\",\"CONTROL_POWER\",\"READ_CURRENT_CHANNEL\",\"READ_RUNNING_APPS\",\"READ_UPDATE_INFO\",\"UPDATE_FROM_REMOTE_APP\",\"READ_LGE_TV_INPUT_EVENTS\",\"READ_TV_CURRENT_TIME\"],\"serial\":\"2f930e2d2cfe083771f68e4fe7bb07\"},\"permissions\":[\"LAUNCH\",\"LAUNCH_WEBAPP\",\"APP_TO_APP\",\"CLOSE\",\"TEST_OPEN\",\"TEST_PROTECTED\",\"CONTROL_AUDIO\",\"CONTROL_DISPLAY\",\"CONTROL_INPUT_JOYSTICK\",\"CONTROL_INPUT_MEDIA_RECORDING\",\"CONTROL_INPUT_MEDIA_PLAYBACK\",\"CONTROL_INPUT_TV\",\"CONTROL_POWER\",\"READ_APP_STATUS\",\"READ_CURRENT_CHANNEL\",\"READ_INPUT_DEVICE_LIST\",\"READ_NETWORK_STATE\",\"READ_RUNNING_APPS\",\"READ_TV_CHANNEL_LIST\",\"WRITE_NOTIFICATION_TOAST\",\"READ_POWER_STATE\",\"READ_COUNTRY_INFO\"],\"signatures\":[{\"signatureVersion\":1,\"signature\":\"eyJhbGdvcml0aG0iOiJSU0EtU0hBMjU2Iiwia2V5SWQiOiJ0ZXN0LXNpZ25pbmctY2VydCIsInNpZ25hdHVyZVZlcnNpb24iOjF9.hrVRgjCwXVvE2OOSpDZ58hR+59aFNwYDyjQgKk3auukd7pcegmE2CzPCa0bJ0ZsRAcKkCTJrWo5iDzNhMBWRyaMOv5zWSrthlf7G128qvIlpMT0YNY+n/FaOHE73uLrS/g7swl3/qH/BGFG2Hu4RlL48eb3lLKqTt2xKHdCs6Cd4RMfJPYnzgvI4BNrFUKsjkcu+WD4OO2A27Pq1n50cMchmcaXadJhGrOqH5YmHdOCj5NSHzJYrsW0HPlpuAx/ECMeIZYDh6RMqaFM2DXzdKX9NmmyqzJ3o/0lkk/N97gfVRLW5hA29yeAwaCViZNCP8iC9aO0q9fQojoa7NQnAtw==\"}]}}}}",
+            "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
  
             "__SETDATA": {"type":"static", "command":".", "evaldo":[{"test":true,"then":"__REQUESTINPUTSOCKET", "or":""}, {"test":true,"then":"__REFRESHAPPLIST", "or":""}, {"test":true,"then":"__REFRESHINPUTLIST", "or":""}, {"test":true,"then":"__SHOWOFF", "or":""}]},
-            "__REFRESHAPPLIST": {"label":"", "type":"webSocket", "command":{"connection": "ws://$DeviceURI", "message":{"type": "request", "id": "GetApplicationsList", "uri": "ssap://com.webos.applicationManager/listLaunchPoints", "payload": {}}},
+            "__REFRESHAPPLIST": {"label":"", "type":"webSocket", "command":{"connection": "wss://$DeviceURI", "message":{"type": "request", "id": "GetApplicationsList", "uri": "ssap://com.webos.applicationManager/listLaunchPoints", "payload": {}}},
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "__REFRESHINPUTLIST": {"label":"", "type":"webSocket", "command":{"connection": "ws://$DeviceURI", "message":{"type": "request", "id": "GetInputsList", "uri": "ssap://tv/getExternalInputList", "payload": {}}},
+            "__REFRESHINPUTLIST": {"label":"", "type":"webSocket", "command":{"connection": "wss://$DeviceURI", "message":{"type": "request", "id": "GetInputsList", "uri": "ssap://tv/getExternalInputList", "payload": {}}},
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },   
 
-            "__REQUESTINPUTSOCKET" : {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"InputSocketRequest\",\"uri\":\"ssap://com.webos.service.networkinput/getPointerInputSocket\"}}; rep;",
+            "__REQUESTINPUTSOCKET" : {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"InputSocketRequest\",\"uri\":\"ssap://com.webos.service.networkinput/getPointerInputSocket\"}}; rep;",
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
 
             "__VOLUMECHANGED": {"type":"static", "command":".",
                 "evalwrite":[{"variable":"MyStatus","value":"DYNAMIK let vol = $VolumePlayed; '||'.repeat(vol) + '--'.repeat(Math.round((100-vol)/3))"}]
             },
-            "__VOLUMESET": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"volumeChange\",\"uri\":\"ssap://audio/setVolume\"}}; rep.message.payload = {\"volume\": $VolumePlayed}; rep;",
+            "__VOLUMESET": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"volumeChange\",\"uri\":\"ssap://audio/setVolume\"}}; rep.message.payload = {\"volume\": $VolumePlayed}; rep;",
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "VOLUME UP": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"volumeChange\",\"uri\":\"ssap://audio/volumeUp\"}}; rep;",
+            "VOLUME UP": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"volumeChange\",\"uri\":\"ssap://audio/volumeUp\"}}; rep;",
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "VOLUME DOWN": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"volumeChange\",\"uri\":\"ssap://audio/volumeDown\"}}; rep;",
+            "VOLUME DOWN": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"volumeChange\",\"uri\":\"ssap://audio/volumeDown\"}}; rep;",
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
     
-            "__SHOWOFF": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AsyncId\",\"uri\":\"ssap://system.notifications/createToast\", \"payload\":{\"message\":\"TV Controlled by META\"}}}; rep.message.id = \"showoff_\" + \"$AsyncId\"; rep;",
+            "__SHOWOFF": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AsyncId\",\"uri\":\"ssap://system.notifications/createToast\", \"payload\":{\"message\":\"TV Controlled by META\"}}}; rep.message.id = \"showoff_\" + \"$AsyncId\"; rep;",
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
 
@@ -242,45 +242,45 @@
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
 
-            "INPUT HDMI 1": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi1\"}}}; rep;",
+            "INPUT HDMI 1": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi1\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"HDMI 1 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT HDMI 2": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi2\"}}}; rep;",
+            "INPUT HDMI 2": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi2\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"HDMI 2 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT HDMI 3": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi3\"}}}; rep;",
+            "INPUT HDMI 3": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi3\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"HDMI 3 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT HDMI 4": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi4\"}}}; rep;",
+            "INPUT HDMI 4": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi4\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"HDMI 4 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT HDMI 5": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi5\"}}}; rep;",
+            "INPUT HDMI 5": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi5\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"HDMI 5 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT HDMI 6": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi6\"}}}; rep;",
+            "INPUT HDMI 6": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.hdmi6\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"HDMI 6 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
 
-            "INPUT AV1": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av1\"}}}; rep;",
+            "INPUT AV1": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av1\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"AV 1 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT AV2": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av2\"}}}; rep;",
+            "INPUT AV2": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av2\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"AV 2 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
-            "INPUT AV3": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av3\"}}}; rep;",
+            "INPUT AV3": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.av3\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"AV 3 pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
             
-            "INPUT COMPONENT": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.component\"}}}; rep;",
+            "INPUT COMPONENT": {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"com.webos.app.externalinput.component\"}}}; rep;",
                 "evalwrite":[{"variable":"MyStatus","value":"Component pressed."}],
                 "evaldo":[{"test":"DYNAMIK  if (JSON.parse(\"$Result\").readystate!=1) {true} else {false}","then":"__RESTART", "or":""}]
             },
@@ -327,7 +327,7 @@
                     ]
                 },
                 "Launch":{"label":"Browse", "commandset": [
-                    {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"ws://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"$AppId\"}}}; rep;"}
+                    {"type":"webSocket", "command":"DYNAMIK let rep = {\"connection\": \"wss://$DeviceURI\", \"message\":{\"type\":\"request\",\"id\":\"AppLaunch\",\"uri\":\"ssap://system.launcher/launch\", \"payload\":{\"id\":\"$AppId\"}}}; rep;"}
                     ]}
                 }
             }
