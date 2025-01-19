@@ -1,0 +1,96 @@
+[
+    {
+        "id": "e89d35b7d24c6a56",
+        "type": "http request",
+        "z": "b154c0e131de9d56",
+        "name": "",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "body",
+        "url": "",
+        "tls": "0a53567d44a6b551",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": true,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "Content-Type",
+                "keyValue": "",
+                "valueType": "image/png",
+                "valueValue": ""
+            }
+        ],
+        "x": 590,
+        "y": 760,
+        "wires": [
+            [
+                "0a9f6d9cbd8a27ac"
+            ]
+        ]
+    },
+    {
+        "id": "61a15306881e6fdb",
+        "type": "http in",
+        "z": "b154c0e131de9d56",
+        "name": "",
+        "url": "/LGPics",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 760,
+        "wires": [
+            [
+                "c4987a6401adfc02"
+            ]
+        ]
+    },
+    {
+        "id": "c4987a6401adfc02",
+        "type": "function",
+        "z": "b154c0e131de9d56",
+        "name": "URLForward",
+        "func": "msg.url = msg.payload.url;\nmsg.rejectUnauthorized = false;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 760,
+        "wires": [
+            [
+                "e89d35b7d24c6a56"
+            ]
+        ]
+    },
+    {
+        "id": "0a9f6d9cbd8a27ac",
+        "type": "http response",
+        "z": "b154c0e131de9d56",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "image/png"
+        },
+        "x": 800,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "0a53567d44a6b551",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    }
+]
