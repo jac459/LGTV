@@ -1,5 +1,7 @@
 # LGTV
 
+## Demo: https://youtube.com/shorts/bFfYumE51Mg?si=lKv_6qCuhE3_moGF
+
 If your remote can't display the pics by default in the remote:
 1 - use the alternate LGTV.json (you can rename it as LGTV.json).
 2 - if your meta is not running in the same server than the node-red, modify the line 36 and replace in "URLConverter":"http://$MetaIP:1880/LGPics?url=", the $MetaIP by the actual IP of your node-red.
