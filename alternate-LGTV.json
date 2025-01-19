@@ -33,7 +33,7 @@
             "AppId":"",
             "DeviceMac":"DYNAMIK_INST_START DYNAMIK JSON.parse(\"$Result\").mac DYNAMIK_INST_END",
             "InputWebSocket":"$InputWebSocket",
-            "URLConverter":"http://192.168.50.10:1880/LGPics?url=",
+            "URLConverter":"http://$MetaIP:1880/LGPics?url=",
             "VolumePlayed": 0
         },
         "listeners" : {
